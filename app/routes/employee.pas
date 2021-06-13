@@ -3,7 +3,7 @@ unit employee;
 interface
 
 uses
-  Horse, System.JSON;
+  Horse, System.JSON, sysutils;
 
 procedure Get_Employees(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 procedure Get_Employee(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -55,8 +55,22 @@ begin
 end;
 
 procedure Get_Employee(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+var
+  LRespObj: TJSONObject;
+  LEmployeeSelected: TJSONObject;
+  id: Double;
 begin
+  id := StrToFloat(Req.Params['id']);
 
+  LRespObj := TJSONObject.Create;
+  LEmployeeSelected := TJSONObject.Create;
+  LEmployeeSelected.AddPair(TJSONPair.Create('name', 'Employee'+Req.Params['id']));
+  LEmployeeSelected.AddPair(TJSONPair.Create('id', TJSONNumber.Create(id)));
+
+  LRespObj.AddPair(TJSONPair.Create('r', TJSONBool.Create(true)));
+  LRespObj.AddPair(TJSONPair.Create('m', 'Success'));
+  LRespObj.AddPair(TJSONPair.Create('d', LEmployeeSelected));
+  res.Send(LRespObj.ToString);
 end;
 
 end.

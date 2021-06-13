@@ -18,6 +18,7 @@ begin
       Route('/employees')
         .Get(employee.Get_Employees);
       Route('/employees/:id')
+        .Get(employee.Get_Employee);
     end;
 
     THorse.Listen(8080, procedure(Horse: THorse) begin
